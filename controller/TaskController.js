@@ -1,14 +1,40 @@
 const Task = require('../models/Task')
 
+let message = "";
+let = type = "";
+
+
+const getAllTasks = async (req, res) => {
+    try{
+        setTimeout(() => {
+            message = "";
+        }, 1000)
+        const tasksLists = await Task.find();
+        return res.render("index", {
+            tasksLists, 
+            task: null, 
+            taskDelete: null,
+            message,
+            type
+        });
+    }catch(err){
+        res.status(500).send({error: err.message});
+    }
+};
+
 const createTask = async(req, res) => {
     const task = req.body;
 
     if(!task.task){
+        message = "Insira um texto antes de adicionar a tarefa!";
+        type = "danger";
         return res.redirect("/");
     }
  
     try{
         await Task.create(task);
+        message = "Tarefa criada com sucesso!";
+        type = "success";
         return res.redirect("/");
     }catch(err){
         res.status(500).send({error: err.message});
@@ -23,10 +49,10 @@ const getById = async (req, res) => {
             //se vai do cliente para o servidor usa-se o req (requisição)
             const task = await Task.findOne({_id: req.params.id});
             //isso manda (render) para o index as variaveis    
-            res.render("index", {task, taskDelete: null, tasksLists});
+            res.render("index", {task, taskDelete: null, tasksLists, message, type});
         }else{
             const taskDelete = await Task.findOne({_id: req.params.id});
-            res.render("index", {task: null, taskDelete, tasksLists});
+            res.render("index", {task: null, taskDelete, tasksLists, message, type});
         }
 
     }catch(err){
@@ -39,6 +65,8 @@ const updateOneTask = async (req, res) => {
     try{
         const task = req.body;
         await Task.updateOne({_id: req.params.id}, task);
+        message = "Tarefa atualizada com sucesso!";
+        type = "success";
         res.redirect("/");
     }catch(err){
         res.status(500).send({error: err.message});
@@ -49,26 +77,37 @@ const deleteOneTask = async (req, res) => {
     try{
                                         //esse id é o nome que foi colocado na rota
         await Task.deleteOne({ _id: req.params.id });
+        message = "Tarefa apagada com sucesso!";
+        type = "success";
         res.redirect("/");
     }catch(err){
         res.status(500).send({error: err.message});
     }
 }
 
-const getAllTasks = async (req, res) => {
+const taskCheck = async (req, res) => {
     try{
-        const tasksLists = await Task.find();
-        return res.render("index", {tasksLists, task: null, taskDelete: null});
-    }catch(err){
+        const task = await Task.findOne({ _id: req.params.id });
+
+        //condicional ternário
+        //se a primeira condição ? (true) ... : (senao) ...
+        task.check ? task.check = false : task.check = true;
+        
+        await Task.updateOne({_id:req.params.id}, task);
+        res.redirect("/");
+    }
+
+    catch(err){
         res.status(500).send({error: err.message});
     }
-};
+}
 
 module.exports = {
     getAllTasks,
     createTask,
     getById,
     updateOneTask,
-    deleteOneTask 
+    deleteOneTask,
+    taskCheck
 };
 

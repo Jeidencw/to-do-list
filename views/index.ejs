@@ -10,6 +10,19 @@
 </head>
 <body>
     
+    <% if(message != ""){%>
+
+        <section class="message message-<%= type %>">
+            <p><%= message %></p>
+            <span id="close-message">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </span>
+        </section>
+    <%} %>
+
+
     <header>
         <% if(task == null) { %>
             <h1>TO DO LIST</h1>
@@ -29,9 +42,9 @@
     <section id="tasks">
         <ul>
             <% tasksLists.forEach((task) => { %>
-                <li>
+                <li class="check-<%= task.check%>">
                     <div>
-                        <a href="/"><%= task.task %></a>
+                        <a href="/check/<%=task._id %>" class="check-<%= task.check%>"><%= task.task %></a>
                         <span>Criado em: <%= task.date.toLocaleString('pt-BR') %> </span> 
                     </div>   
                     <div>
