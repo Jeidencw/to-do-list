@@ -46,6 +46,7 @@ button{
     border-radius: 0;
     border: none;
     transition: all .3s ease-in-out;
+    min-width: 80px;
 }
 
 button:hover{
@@ -72,6 +73,7 @@ ul li{
     justify-content: space-between;
     flex-wrap: wrap;
     font-size: 1.3rem;
+    min-height: 50px;
 }
 
 ul li a{
@@ -80,7 +82,7 @@ ul li a{
     padding-left: 2.2rem;
 }
 
-ul li   span{
+ul li span{
     color: #ccc;
     font-style: italic;
     font-size: .8rem;
@@ -277,4 +279,53 @@ ul li a.check-false::before{
     height: .8rem;
     width: .8rem;
     border-width: 2px;
+}
+
+@media(max-width: 600px){
+    header{
+        padding: 1em;
+        margin: .5rem;
+    }
+    input{
+        width: 60%;
+        font-size: .9rem;
+    }
+        
+    button{ 
+        padding: .6rem;
+        width: 20%;
+        font-size: .9rem;
+    }
+        
+    header h1{
+        padding-bottom: 1.5rem;
+    }
+    ul li{
+        font-size: 1rem;
+    }
+    ul li div{
+        flex-wrap: nowrap;
+    }  
+    .icons {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    ul li a{
+        text-decoration: none;
+        color: #fff;
+        padding-left: 2.2rem;
+    }
+    a.btnDelete, a.btnUpdate {
+        padding: .1rem;
+    }
+    ul li span{
+        padding-left: .5rem;
+        padding-right: 2rem;
+    }
+    section#tasks{
+        margin: .5rem;
+    }
 }
